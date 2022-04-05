@@ -35,4 +35,4 @@ Presentations at conferences on the topic of research
 Software modules developed as part of the study
 ======================================================
 1. A python package *mylib* with all implementation `here <https://github.com/IvanLukianenko/OST/tree/master/src/mylib>`_.
-2. A code with all experiment visualisation `here <https://github.com/IvanLukianenko/OST/blob/master/code/main.ipynb>`_. Can use `colab <http://colab.research.google.com/github/Intelligent-Systems-Phystech/ProjectTemplate/blob/master/code/main.ipynb>`_.
+2. A code with all experiment visualisation `here <https://github.com/IvanLukianenko/OST/blob/master/code/main.ipynb>`_.
