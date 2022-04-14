@@ -1,158 +1,126 @@
 \documentclass{article}
 \usepackage{arxiv}
 
+\usepackage{tabularx}
 \usepackage[utf8]{inputenc}
-\usepackage[english, russian]{babel}
+\usepackage[english]{babel}
 \usepackage[T1]{fontenc}
 \usepackage{url}
 \usepackage{booktabs}
 \usepackage{amsfonts}
+\usepackage{amsthm}
 \usepackage{nicefrac}
 \usepackage{microtype}
 \usepackage{lipsum}
 \usepackage{graphicx}
 \usepackage{natbib}
 \usepackage{doi}
+\usepackage{amsmath}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{graphicx}
+\graphicspath{ {../figures/} }
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand\tab[1][1cm]{\hspace*{#1}}
 
 
+\title{Optimal stock trading}
 
-\title{A template for the \emph{arxiv} style}
-
-\author{ David S.~Hippocampus\thanks{Use footnote for providing further
-		information about author (webpage, alternative
-		address)---\emph{not} for acknowledging funding agencies.} \\
-	Department of Computer Science\\
-	Cranberry-Lemon University\\
-	Pittsburgh, PA 15213 \\
-	\texttt{hippo@cs.cranberry-lemon.edu} \\
-	%% examples of more authors
-	\And
-	Elias D.~Striatum \\
-	Department of Electrical Engineering\\
-	Mount-Sheikh University\\
-	Santa Narimana, Levand \\
-	\texttt{stariate@ee.mount-sheikh.edu} \\
-	%% \AND
-	%% Coauthor \\
-	%% Affiliation \\
-	%% Address \\
-	%% \texttt{email} \\
-	%% \And
-	%% Coauthor \\
-	%% Affiliation \\
-	%% Address \\
-	%% \texttt{email} \\
-	%% \And
-	%% Coauthor \\
-	%% Affiliation \\
-	%% Address \\
-	%% \texttt{email} \\
+\author{ Ivan Lukyanenko \\
+	Department of Control and Applied Mathematics\\
+	Moscow Institute of Physics and Technologies\\
+	Moscow \\
+	\texttt{lukianenko.ia@phystech.edu} \\
+	\texttt{lukyanenko.ai.01@gmail.com} \\
 }
 \date{}
 
-\renewcommand{\shorttitle}{\textit{arXiv} Template}
+\renewcommand{\shorttitle}{Optimal Stock Trading}
 
 %%% Add PDF metadata to help others organize their library
 %%% Once the PDF is generated, you can check the metadata with
 %%% $ pdfinfo template.pdf
 \hypersetup{
-pdftitle={A template for the arxiv style},
-pdfsubject={q-bio.NC, q-bio.QM},
-pdfauthor={David S.~Hippocampus, Elias D.~Striatum},
-pdfkeywords={First keyword, Second keyword, More},
+pdftitle={Optimal Stock Trading},
+pdfauthor={Ivan Lukyanenko},
+pdfkeywords={Trading, Stock Pricing, Machine Learning, SDE, LSTM, GB},
 }
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-	\lipsum[1]
+    As soon as trading became possible for private traders, but not only for companies the actuality of stock predicting researches was increased. Here is one of them. The goal of the project is to understand how to predict stock prices in nearest future. In this paper we analyze three different types of forecasting stock prices: Machine Learning Approaches, Trading Strategies, Application of Stochastic Differential Equations. Firstly, we review recent works in this field. Secondly, we apply different approaches for predicting prices. In the conclusion, we compare these approaches. 
 \end{abstract}
 
-
-\keywords{First keyword \and Second keyword \and More}
+\keywords{Trading \and Stock Pricing \and Machine Learning \and SDE \and LSTM \and GB}
 
 \section{Introduction}
-\lipsum[2]
-\lipsum[3]
+    Stock trading is about buying and selling companies' shares on the financial market. The goal of trading is  "buy low -- sell high". Our goal is to optimize the return on the investments and build AI system to make everything automatic with minimum human interventions.   
+\section{Problem Statement}
+    Let's formalize the problem mathematically for machine learning approach.
+    
+    $f(w, x)$ - this is parametric family of functions, whether LSTM network or GB;
+    
+    $w \in \mathbb{R} ^ n$ - parameters of the model;
+    
+    $x \in \mathbb{R} ^ h_t$ - data sample;
+    
+    $h_t \in \mathbb{R}$ - horizon of training;
+    
+    $h_f \in \mathbb{R}$ - horizon of forecasting;
+    \begin{equation}
+        f(w, x) : \mathbb{R}^{h_t} \rightarrow \mathbb{R}^{h_f} 
+    \end{equation}
+    In terms of regression problem we need to minimize loss function.
+    
+    $L(y_{t}, y_{p})$ - this is loss function, that measures difference between $y_t$ - true values and $y_p$ - predicted values.
+    
+    Optimization problem:
+    \begin{equation}
+        L(y_t, f(w, x)) \rightarrow \min\limits_{w\in\mathbb{R}^n}
+    \end{equation}
+    \begin{equation}
+        w^* = \argmin\limits_{w\in\mathbb{R}^n} L(y_t, f(w, x)) 
+    \end{equation}
+    
+    In terms of stock trading problem we have to optimize the return from the investments:
+    
+    $h_{tr} \in \mathbb{R}$ - horizon of trading;
+    
+    Let's simplify the strategy for the beginning: buy at minimum of trading period and sell at maximum;
+    
+    $\Delta_{h_{tr}} \in \mathbb{R}$ - difference between maximum and minimum in the trading period;
+    
+    $t_{min} \in [0, h_{tr}]$ - timestamp of minimum stock price;
+    
+    $t_{max} \in [0, h_{tr}]$ - timestamp of maximum stock price;
+    
+    $T \in \mathbb{R}^{h_{tr}}$ - set of indices of timestamps;
+    
+    $\text{MAPE} = \text{mean}~\frac{|y_p - y_t|}{y_t}$
+    \begin{equation}
+        \begin{aligned}
+            \max_{w} \quad & \Delta_{h_{tr}} = \max_{t \in T}f(w,x) - \min_{t \in T}f(w,x)\\
+            \textrm{s.t.} \quad & \text{MAPE}(f) \leq 10 \\
+            & t_{min} \leq t_{max}    \\
+        \end{aligned}
+    \end{equation}
+    
+    The second constraint we need to make our system adequate. The first one limits parametric family of function till functions that have pretty well forecasting ability.
 
-\section{Headings: first level}
-\label{sec:headings}
+\section{Recent papers review}
+    bla bla bla
+    
+\section{Machine Learning}
+    \subsection{Gradient Boosting}
+    \subsection{LSTM}
 
-\lipsum[4] See Section \ref{sec:headings}.
+\section{Trading Strategies}
 
-\subsection{Headings: second level}
-\lipsum[5]
-\begin{equation}
-	\xi _{ij}(t)=P(x_{t}=i,x_{t+1}=j|y,v,w;\theta)= {\frac {\alpha _{i}(t)a^{w_t}_{ij}\beta _{j}(t+1)b^{v_{t+1}}_{j}(y_{t+1})}{\sum _{i=1}^{N} \sum _{j=1}^{N} \alpha _{i}(t)a^{w_t}_{ij}\beta _{j}(t+1)b^{v_{t+1}}_{j}(y_{t+1})}}
-\end{equation}
+\section{Stochastic Differential Equation}
 
-\subsubsection{Headings: third level}
-\lipsum[6]
-
-\paragraph{Paragraph}
-\lipsum[7]
-
-
-
-\section{Examples of citations, figures, tables, references}
-\label{sec:others}
-
-\subsection{Citations}
-Citations use \verb+natbib+. The documentation may be found at
-\begin{center}
-	\url{http://mirrors.ctan.org/macros/latex/contrib/natbib/natnotes.pdf}
-\end{center}
-
-Here is an example usage of the two main commands (\verb+citet+ and \verb+citep+): Some people thought a thing \citep{kour2014real, hadash2018estimate} but other people thought something else \citep{kour2014fast}. Many people have speculated that if we knew exactly why \citet{kour2014fast} thought this\dots
-
-\subsection{Figures}
-\lipsum[10]
-See Figure \ref{fig:fig1}. Here is how you add footnotes. \footnote{Sample of the first footnote.}
-\lipsum[11]
-
-\begin{figure}
-	\centering
-	\includegraphics[width=0.5\textwidth]{../figures/log_reg_cs_exp.eps}
-	\caption{Sample figure caption.}
-	\label{fig:fig1}
-\end{figure}
-
-\subsection{Tables}
-See awesome Table~\ref{tab:table}.
-
-The documentation for \verb+booktabs+ (`Publication quality tables in LaTeX') is available from:
-\begin{center}
-	\url{https://www.ctan.org/pkg/booktabs}
-\end{center}
-
-
-\begin{table}
-	\caption{Sample table title}
-	\centering
-	\begin{tabular}{lll}
-		\toprule
-		\multicolumn{2}{c}{Part}                   \\
-		\cmidrule(r){1-2}
-		Name     & Description     & Size ($\mu$m) \\
-		\midrule
-		Dendrite & Input terminal  & $\sim$100     \\
-		Axon     & Output terminal & $\sim$10      \\
-		Soma     & Cell body       & up to $10^6$  \\
-		\bottomrule
-	\end{tabular}
-	\label{tab:table}
-\end{table}
-
-\subsection{Lists}
-\begin{itemize}
-	\item Lorem ipsum dolor sit amet
-	\item consectetur adipiscing elit.
-	\item Aliquam dignissim blandit est, in dictum tortor gravida eget. In ac rutrum magna.
-\end{itemize}
-
-
-\bibliographystyle{unsrtnat}
+\bibliographystyle{abbrv}
 \bibliography{references}
 
 \end{document}
