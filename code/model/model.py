@@ -12,8 +12,8 @@ class GRU(nn.Module):
         self.fc = nn.Linear(hidden_dim, output_dim)
 
     def forward(self, x):
-        h0 = torch.zeros(x.size(0), self.hidden_dim).requires_grad_()
-        out, (hn) = self.gru(x, (h0.detach()))
+        h0 = torch.randn(self.num_layers, x.shape[0],  self.hidden_dim)
+        out, (hn) = self.gru(x, h0)
         out = self.fc(out[-1])
         out = torch.sigmoid(out)
         return out
