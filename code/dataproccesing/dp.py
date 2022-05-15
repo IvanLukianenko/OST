@@ -50,7 +50,6 @@ def prepare_data(ticker, start, lookback):
 
 def get_dataloaders(ticker, start, lookback, batch_size):
     x_train, x_test, y_train_gru, y_test_gru = prepare_data(ticker, start, lookback)
-    #return x_train, x_test, y_train_gru, y_test_gru
     x_train, x_test = x_train.reshape(x_train.shape[0], x_train.shape[1], 1), x_test.reshape(x_test.shape[0], x_test.shape[1], 1)
     train_ds = TensorDataset(x_train, y_train_gru)
     train_dl = DataLoader(train_ds, shuffle=False)
