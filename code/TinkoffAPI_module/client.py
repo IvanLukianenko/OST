@@ -1,6 +1,5 @@
 from openapi_client import openapi
 
-TOKEN = "t.ugSZpOi4vu6q74hKMyeFBSCMR1ZSvWJhRhkdsyEDZP-ZMA_FReUpys3y2jcS6hKt1n6D5CJ584u-N9AejeIdEA"
 SANDBOX_TOKEN = "t.dti3PE10t2_ANB9JE1cnwskzv3ZtwEHbH5Sn9p25W0yt0EZokCqVLIuQ75fqn3WZQGshizm8HCrvA7eqPEW49A"
 
 
