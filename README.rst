@@ -24,13 +24,9 @@ Abstract
 
 The goal of the project is to understand how to predict stock prices in nearest future. The aim of the research to observe three different types of forecasting stock prices: Machine Learning Approaches, Trading Strategies, Application of Stohastic Differential Equations.
 
-Research publications
-===============================
-1. 
-
-Presentations at conferences on the topic of research
-================================================
-1. 
+Poster 
+========
+Quick poster overview the project `poster https://github.com/IvanLukianenko/OST/blob/master/paper/OST_with_TinkoffAPI%20(2).pdf`_.
 
 Software modules developed as part of the study
 ======================================================
