@@ -26,7 +26,7 @@ The goal of the project is to understand how to predict stock prices in nearest 
 
 Poster 
 ========
-Quick poster overview the project `poster https://github.com/IvanLukianenko/OST/blob/master/paper/OST_with_TinkoffAPI%20(2).pdf`_.
+Quick poster overview the project `poster <https://github.com/IvanLukianenko/OST/blob/master/paper/OST_with_TinkoffAPI%20(2).pdf>`_.
 
 Software modules developed as part of the study
 ======================================================
